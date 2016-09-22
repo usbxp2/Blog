@@ -1,0 +1,198 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="renderer" content="webkit">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../../favicon.ico">
+
+    <title>{% block title %}{% endblock %}</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="{% static 'css/bootstrap.css' %}" rel="stylesheet">
+    <link href="{% static 'css/docs.css' %}" rel="stylesheet">
+	  <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+     {% block css %}{% endblock %}
+     {% block js %}{% endblock %}
+    <!--[if lt IE 9]>
+	<script src="{% static 'js/respond.min.js' %}"></script>
+      <script src="{% static 'js/html5shiv.min.js' %}"></script
+      
+    <![endif]-->
+    <script src="{% static 'js/jquery.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+	<link href="{% static 'css/basic.css' %}" rel="stylesheet" type="text/css" />
+	<script type="text/javascript" src="{% static 'js/jquery-1.7.2.min.js' %}"></script>
+	<script type="text/javascript" src="{% static 'js/common.js' %}"></script>
+	<script type="text/javascript" src="{% static 'js/js.js' %}"></script>
+
+    
+    <!-- Bootstrap theme -->
+
+
+
+    <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
+    <!--[if lt IE 9]><script src="../../js/ie8-responsive-file-warning.js"></script><![endif]-->
+
+
+  
+      
+  </head>
+
+  <body role="document">
+
+    <!-- Fixed navbar -->
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header ">
+		<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+            <div style="margin-top:10px;"><image src="{% static 'logo.png' %}" width=70px;></div>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <!--<li class="active"><a href="#"></a></li>-->
+            {% for i in nav_list %}
+              {% if i.id == 5 %}
+               <li><a href="{% url 'index' %}">{{ i.name }}</a></li>
+              {% else %}
+              <li><a href="{% url 'box' %}?id={{ i.id }}">{{ i.name }}</a></li>
+              {% endif %}
+              
+            {% endfor %}
+          </ul>
+          <!--向右对齐文本-->
+          <p class="navbar-text navbar-right">{% if not request.user.is_authenticated %}<a style="color:white" href="{% url 'login' %}">登录</a>&nbsp;&nbsp;&nbsp;<a style="color:white" href="{% url 'reg' %}">注册</a>{% else %}{{ request.user.username }}&nbsp;&nbsp;&nbsp;<a style="color:white" href="{% url 'logout' %}">注销</a>{% endif %}</p>
+        </div><!--/.nav-collapse -->
+
+      </div>
+    </nav>
+    
+    <!-- nav end-->
+    
+    <!-- baaner begin -->
+    <div class="container-fluid" role="main">
+       <div class="weiduduan clearfix">
+		   <header>
+		  <div class="header-content home">
+			<div class="parallax-bg" id="slider-wrap">
+			  <div class="slider parallax-bg" id="slider">
+				<div class="slider-sections sandbox">
+                  <section class="first"><img alt="Kendo UI" src="/media/{{ ad_frist.image_url }}"/>
+					<div class="text">
+					  <h2>{{ ad_frist.title }}<br />
+						{{ ad_frist.description2 }} </h2>
+					  <p class="copy">{{ ad_frist.description }}</p>
+					  <p class="button"><a href="{{ ad_frist.url }}">Download</a> <a class="dimmed"  href="{{ ad_frist.url }}">Learn More</a></p>
+					</div>
+				  </section>
+                  {% for ad in ad_list %}
+                  {% if ad.index != 1 %}
+				  <section><img alt="Kendo UI" src="/media/{{ ad.image_url }}"/>
+					<div class="text">
+					  <h2>{{ ad.title }}<br />
+						{{ ad.description2 }} </h2>
+					  <p class="copy">{{ ad.description }}</p>
+					  <p class="button"><a href="{{ ad.url }}">Download</a> <a class="dimmed"  href="{{ ad.url }}">Learn More</a></p>
+					</div>
+				  </section>
+                      {% endif %}
+                  {% endfor %}
+				</div>
+			  </div>
+			  <a class="slider-prev" href="javascript: void(0)">?</a> <a class="slider-next" href="javascript: void(0)">?</a> </div>
+		  </div>
+		</header>
+			</div>    
+         <!--banner end -->            
+    
+    
+    <!-- body left begin -->
+	    
+        <div class="row">
+
+		  <div class="col-md-8 topblog" style="border-right:1px solid #969696; ">
+          <h3><p><span>{% block header1 %}文章{% endblock %}</span>{% block header2 %}内容 Blog Content{% endblock %}</p></h3>
+          {% block body %}
+          <div class="bs-callout bs-callout-danger">
+
+
+        <!-- body left end -->
+
+
+          </div>
+               {% endblock %}
+	      </div>
+
+		
+          <!--body 右侧开始-->>
+		  <div class="col-md-4" style="border-right:1px solid #969696;">
+             {% for i in ad_right_top %}
+		     <div style="padding-top:10px;"><img src="/media/{{ i.image_url }}" width="400px"></div>
+             {% endfor %}
+			 <div class="hotcomm">
+			  <h2>最新文章</h2>
+				 <ul>
+                    {% for i in article_list_latest %}
+					<li><a title="{{ i.title }}" href="{% url 'content' %}?id={{ i.id }}">{{ i.title }}</a></li>
+                    {% endfor %}
+				 </ul>    
+               </div>
+			   <div class="hotcomm">
+			  <h2>热门文章</h2>
+				 <ul>
+                    {% for i in article_list_hot %}
+					<li><a title="{{ i.title }}" href="{% url 'content' %}?id={{ i.id }}">{{ i.title }}</a></li>
+                    {% endfor %}
+				 </ul>    
+               </div>
+			    <!--<div class="hotcomm">
+			  <h2>最近访客</h2>
+				 <ul>         
+					<li><a title="不要在上司肩上哭泣" href="/content/?373.html" target="_blank">[欣赏]不要在上司肩上哭泣</a></li>  
+					<li><a title="房前种菜，屋后栽花" href="/content/?372.html" target="_blank">[欣赏]房前种菜，屋后栽花</a></li>  
+					<li><a title="为了躲避失望，我们习惯隐身" href="/content/?306.html" target="_blank">[欣赏]为了躲避失望，我们习惯隐身</a></li>  
+					<li><a title="三月游石象湖赏郁金香小记" href="/content/?256.html" target="_blank">[游记]三月游石象湖赏郁金香小记</a></li> 
+					<li><a title="三月游石象湖赏郁金香小记" href="/content/?256.html" target="_blank">[游记]三月游石象湖赏郁金香小记</a></li>  
+				    <li><a title="三月游石象湖赏郁金香小记" href="/content/?256.html" target="_blank">[游记]三月游石象湖赏郁金香小记</a></li>  
+	
+				 </ul>    
+               </div>-->
+                 {% for i in ad_right_under %}
+			     <div style="padding-top:10px;"><img src="/media/{{ i.image_url }}" width="400px"></div>
+                 {% endfor %}
+	    </div>
+		<!--body 右侧结束-->
+       </div>
+	</div>
+    
+    <!-- /container -->
+
+<div id="fatfooter">
+  <ul class="fat">
+     
+      <div class="links">
+         <h2>友情链接</h2>
+        <ul>
+          {% for i in link_list %}
+          <li><a href='{{ i.url }}'>{{ i.name }}</a></li>
+          {% endfor %}
+          <!--
+          <li class="more"><a href="/">更多链接&gt;&gt;</a></li>
+          <li class="exchange"><a href="/">申请交换链接</a></li> -->
+        </ul>
+       </div>
+      
+     </ul>   
+      <div id="copright">Design by DanceSmile  <a href="http://www.miibeian.gov.cn">蜀ICP备11002373号-1</a></div>
+</div>
+  </body>
+</html>

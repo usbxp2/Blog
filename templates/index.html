@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block title %}{{ SITE_NAME }}{% endblock %}
+
+{% block body %}
+    {% for i in article_list %}
+   <div class="bs-callout bs-callout-danger">
+    <h4><a href="{% url 'content' %}?id={{ i.id }}">{{ i.title }}</a></h4>
+    <p>{{ i.description }}</p>
+
+       <p class="dateview"><span>{{ i.publish_date }}</span><span>作者：{{ i.user }}</span><span>分类：<a href="{% url 'box' %}?id={{ i.category_id }}" target="_blank">{{ i.category }}</a></span><span>阅读({{ i.click_count }})</span><span>评论({{ i.comment_set.all.count }})</span></p>
+
+</div>
+    {% endfor %}
+
+    {% include 'page.html' %}
+{% endblock %}

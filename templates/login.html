@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+
+{% block title %}{{ SITE_NAME }}{% endblock %}
+
+{% block body %}
+    <div class="main">
+		<div class="header" >
+			<h1></h1>
+		</div>
+		<p></p>
+			<form action="{% url 'login' %}" method="post">
+                {% csrf_token %}
+				<ul class="left-form">
+					<h2>{{ reason }}</h2>
+					<li>
+						{{ login_form.username }}
+						<div style="height:20px"> </div>
+					</li>
+                    <li>
+						{{ login_form.password }}
+						<div style="height: 20px"> </div>
+					</li>
+                    <!--获取当前页面url-->
+                    <input type="hidden" name="source_url" value="{{ request.META.HTTP_REFERER }}">
+					<input type="submit" value="登录">
+					<div class="clear"> </div>
+				</ul>
+				<div class="clear"> </div>
+			</form>
+	</div>
+
+
+{% endblock %}

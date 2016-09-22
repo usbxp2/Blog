@@ -1,0 +1,15 @@
+<nav style="text-align:center;">
+		  <ul class="list-inline">
+            {% if article_list.number != 1 %}
+			<li><a href="?page={{ article_list.previous_page_number }}">上一页</a></li>
+            {% else %}
+            <li>上一页</li>
+             {% endif %}
+			<li>{{ article_list.number }}/{{ article_list.paginator.num_pages }}</li>
+            {% if article_list.number < article_list.paginator.num_pages %}
+			<li><a href="?page={{ article_list.next_page_number }}">下一页</a></li>
+            {% else %}
+            <li>下一页</li>
+            {% endif %}
+		  </ul>
+		</nav>

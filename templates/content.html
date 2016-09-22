@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+
+{% block title %}{{ SITE_NAME }}{% endblock %}
+
+{% block body %}
+
+<div class="bs-callout bs-callout-danger">
+    <h4>{{ article.title }}</h4>
+    <p class="dateview"><span>{{ article.publish_date }}</span><span>作者：{{ article.user }}</span><span>分类：<a href="{% url 'box' %}?id={{ category_id }}" target="_blank">{{ article.category }}</a></span><span>阅读({{ article.click_count }})</span><span>评论({{article.comment_set.all.count }})</span></p>
+			<br>
+			{{ article.content|safe }}
+
+
+<div style=" margin:0 0 0 2%; line-height:50px; color:#999;">共{{ article.comment_set.all.count }}条评论/{{ user_count }}人参与</div>
+
+<!-- 评论框 begin -->
+<ul style="list-style-type:none;">
+    {% for comment in comment_list %}
+    <li style="overflow:hidden;">
+        <div style="margin-top:10px;">
+            <div>
+               <span style="color:#0C9;margin:0 1% 0 1%">{{ comment.user }}</span>
+               <sapn style="color:#CCC;">评论时间:{{ comment.publish_date }}</sapn>
+            </div>
+
+            <table style="color:#2b2b2b; text-indent:2em; line-height:30px;font-size:10px;">
+                <tr><td>{{ comment.content }}</td></tr>
+                <tr><td></td></tr>
+            </table>
+        </div>
+    </li>
+    <div style="border-bottom: 1px solid #d1d1d1;"></div>
+    {% endfor %}
+     {{ error_info }}
+    <!--判断没有登录，显示登录；如果登录，显示评论提醒-->
+    {% if not request.user.is_authenticated %}
+        <li style="margin-top:50px">发表评论，请<a href="{% url 'login' %}">登录</a>&nbsp;或&nbsp;<a href="{% url 'reg' %}">注册</a></li>
+    {% else %}
+        <li style="margin-top:50px;"><span style="color:#0C9;margin:0 1% 0 1%">{{ request.user.username }}</span>，快来点评点评吧！！</a></li>
+    {% endif %}
+    <form action="{% url 'comment_post' %}" method="POST">
+        {% csrf_token %}
+    <li>
+        <table>
+            <tr><td><textarea name="fabiao_name" type="text" style="width:750px;height:138px;padding-top:10px" placeholder="您可以在这里发表评论"></textarea></td></tr>
+            <tr><td><input type="hidden" name="content_id" value="{{ article.id }}" /></td></tr>
+            {% if request.user.is_authenticated %}
+            <tr><td><input type="submit" value="提交" id="fabiao_id" /></td></tr>
+            {% else %}
+            <tr><td>请&nbsp;<a href="{% url 'login' %}">登录</a>&nbsp;后再评论</td></tr>
+            {% endif %}
+        </table>
+    </li>
+    </form>
+</ul><!-- 评论框 end -->
+
+
+
+
+
+
+
+
+
+</div>
+{% endblock %}

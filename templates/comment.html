@@ -1,0 +1,22 @@
+{% load staticfiles %}
+
+<div class="pinglun_count">共2条评论/1人参与</div>
+
+<!-- 评论框 end -->
+<ul>
+    {% for comment in comment_list %}
+    <li>
+        <div class="comment_info">
+            <div class="tit">
+               <span class="username">{{ comment.user }}</span>
+               <sapn class="time">评论时间:{{ comment.publish_date }}</sapn>
+            </div>
+
+            <table class="table table-hover">
+                <tr><td>{{ comment.content }}</td></tr>
+                <tr><td></td></tr>
+            </table>
+        </div>
+    </li>
+    {% endfor %}
+</ul>
